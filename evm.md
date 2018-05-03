@@ -1267,11 +1267,8 @@ These rules reach into the network state and load/store from account storage:
          <account>
            <acctID> ACCT </acctID>
            <storage> STORAGE => STORAGE [ INDEX <- NEW ] </storage>
-           <origStorage> ORIGSTORAGE </origStorage>
            ...
          </account>
-         <refund> R => R +Int Rsstore(SCHED, NEW, #lookup(STORAGE, INDEX), #lookup(ORIGSTORAGE, INDEX)) </refund>
-         <schedule> SCHED </schedule>
 ```
 
 ### Call Operations
@@ -1929,7 +1926,7 @@ The intrinsic gas calculation mirrors the style of the YellowPaper (appendix H).
 ```k
     syntax InternalOp ::= #gasExec ( Schedule , OpCode )
  // ----------------------------------------------------
-    rule <k> #gasExec(SCHED, SSTORE INDEX VALUE) => Csstore(SCHED, VALUE, #lookup(STORAGE, INDEX), #lookup(ORIGSTORAGE, INDEX)) ... </k>
+    rule <k> #gasExec(SCHED, SSTORE INDEX NEW) => Csstore(SCHED, NEW, #lookup(STORAGE, INDEX), #lookup(ORIGSTORAGE, INDEX)) ... </k>
          <id> ACCT </id>
          <account>
            <acctID> ACCT </acctID>
@@ -1937,6 +1934,8 @@ The intrinsic gas calculation mirrors the style of the YellowPaper (appendix H).
            <origStorage> ORIGSTORAGE </origStorage>
            ...
          </account>
+         <refund> R => R +Int Rsstore(SCHED, NEW, #lookup(STORAGE, INDEX), #lookup(ORIGSTORAGE, INDEX)) </refund>
+         <schedule> SCHED </schedule>
 
     rule <k> #gasExec(SCHED, EXP W0 0)  => Gexp < SCHED > ... </k>
     rule <k> #gasExec(SCHED, EXP W0 W1) => Gexp < SCHED > +Int (Gexpbyte < SCHED > *Int (1 +Int (log256Int(W1)))) ... </k> requires W1 =/=K 0
