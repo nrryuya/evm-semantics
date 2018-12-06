@@ -104,7 +104,7 @@ K_BIN=$(K_SUBMODULE)/k-distribution/target/release/k/bin
 # Building
 # --------
 
-build: build-ocaml build-java build-node
+build: build-llvm build-java build-node
 build-ocaml: .build/ocaml/driver-kompiled/interpreter
 build-java: .build/java/driver-kompiled/timestamp
 build-node: .build/vm/kevm-vm
@@ -278,7 +278,7 @@ test-all-vm: $(all_vm_tests:=.test)
 test-slow-vm: $(slow_vm_tests:=.test)
 test-vm: $(quick_vm_tests:=.test)
 
-tests/ethereum-tests/VMTests/%.test: tests/ethereum-tests/VMTests/% build-ocaml
+tests/ethereum-tests/VMTests/%.test: tests/ethereum-tests/VMTests/% build-llvm
 	MODE=VMTESTS SCHEDULE=DEFAULT $(TEST) $<
 
 test-haskell: $(quick_vm_tests:=.haskelltest)
@@ -304,7 +304,7 @@ test-all-bchain: $(all_bchain_tests:=.test)
 test-slow-bchain: $(slow_bchain_tests:=.test)
 test-bchain: $(quick_bchain_tests:=.test)
 
-tests/ethereum-tests/BlockchainTests/%.test: tests/ethereum-tests/BlockchainTests/% build-ocaml
+tests/ethereum-tests/BlockchainTests/%.test: tests/ethereum-tests/BlockchainTests/% build-llvm
 	$(TEST) $<
 
 # InteractiveTests
